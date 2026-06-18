@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KADR — Every frame earns its place</title>
+<meta name="description" content="Kadr is a video editing studio for founders. We turn your raw footage into short-form that earns attention — captions, cuts, and color in 48 hours." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230a0a0b'/><text y='72' x='50' font-size='64' font-family='monospace' fill='%23f0b429' text-anchor='middle' font-weight='bold'>K</text></svg>" />
+<style>
+:root{
+  --bg:#0a0a0b; --ink:#f4f1ea; --dim:#8a857c; --line:#1f1e1c;
+  --amber:#f0b429; --amber-deep:#c8901a; --film:#e8442f;
+  --serif:'Bricolage Grotesque',sans-serif; --mono:'Geist Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--serif);
+  overflow-x:hidden; -webkit-font-smoothing:antialiased; line-height:1.15;
+}
+body::after{
+  content:""; position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:.045;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection{background:var(--amber); color:#000}
+
+.frame{position:fixed; inset:18px; z-index:50; pointer-events:none}
+.frame i{position:absolute; width:26px; height:26px; border:2px solid var(--amber); opacity:.6}
+.frame i:nth-child(1){top:0;left:0;border-right:0;border-bottom:0}
+.frame i:nth-child(2){top:0;right:0;border-left:0;border-bottom:0}
+.frame i:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}
+.frame i:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
+
+.wrap{max-width:1180px; margin:0 auto; padding:0 32px}
+
+nav{position:fixed; top:0; left:0; right:0; z-index:100; mix-blend-mode:difference}
+.nav-in{display:flex; justify-content:space-between; align-items:center; padding:24px 40px}
+.logo{font-weight:800; font-size:22px; letter-spacing:-.04em; display:flex; align-items:center; gap:8px}
+.logo span{color:var(--amber)}
+.nav-links{display:flex; gap:28px; font-family:var(--mono); font-size:12px; letter-spacing:.05em; text-transform:uppercase}
+.nav-links a{color:var(--ink); text-decoration:none; opacity:.7; transition:.2s}
+.nav-links a:hover{opacity:1}
+@media(max-width:720px){.nav-links{display:none}}
+
+header{min-height:100vh; display:flex; flex-direction:column; justify-content:center; position:relative; padding-top:80px}
+.tc{font-family:var(--mono); font-size:11px; color:var(--dim); letter-spacing:.2em; display:flex; gap:14px; align-items:center; margin-bottom:26px}
+.tc .dot{width:7px;height:7px;border-radius:50%;background:var(--film); box-shadow:0 0 12px var(--film); animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+h1{
+  font-size:clamp(56px,13vw,184px); font-weight:800; letter-spacing:-.05em; line-height:.86;
+  text-transform:uppercase;
+}
+h1 .line{display:block; overflow:hidden}
+h1 .line em{display:inline-block; font-style:normal; transform:translateY(110%); animation:rise .9s cubic-bezier(.16,1,.3,1) forwards}
+h1 .l2 em{animation-delay:.12s} h1 .l3 em{animation-delay:.24s}
+h1 .out{color:transparent; -webkit-text-stroke:1.4px var(--amber)}
+@keyframes rise{to{transform:translateY(0)}}
+.sub{max-width:540px; margin-top:34px; font-size:20px; line-height:1.4; color:#cfcabf; opacity:0; animation:fade 1s ease .6s forwards}
+.sub b{color:var(--amber); font-weight:600}
+@keyframes fade{to{opacity:1}}
+.cta-row{margin-top:40px; display:flex; gap:16px; flex-wrap:wrap; opacity:0; animation:fade 1s ease .8s forwards}
+.btn{font-family:var(--mono); font-size:13px; text-transform:uppercase; letter-spacing:.08em; padding:16px 26px; text-decoration:none; border:1px solid var(--amber); color:var(--bg); background:var(--amber); transition:.25s; display:inline-flex; gap:10px; align-items:center}
+.btn:hover{background:transparent; color:var(--amber)}
+.btn.ghost{background:transparent; color:var(--ink); border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--amber); color:var(--amber)}
+.hero-meta{position:absolute; right:0; bottom:48px; font-family:var(--mono); font-size:11px; color:var(--dim); text-align:right; letter-spacing:.1em; line-height:2}
+@media(max-width:720px){.hero-meta{display:none}}
+
+.marq{border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:18px 0; overflow:hidden; white-space:nowrap; background:#0c0c0d}
+.marq-in{display:inline-block; animation:scroll 28s linear infinite; font-family:var(--mono); text-transform:uppercase; font-size:13px; letter-spacing:.15em; color:var(--dim)}
+.marq-in span{color:var(--amber); margin:0 6px}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+section{padding:120px 0; position:relative}
+.eyebrow{font-family:var(--mono); font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--amber); margin-bottom:20px; display:flex; gap:12px; align-items:center}
+.eyebrow::before{content:""; width:34px; height:1px; background:var(--amber)}
+.sec-title{font-size:clamp(36px,6vw,72px); font-weight:800; letter-spacing:-.04em; line-height:.95; text-transform:uppercase; max-width:14ch}
+.lead{color:var(--dim); font-size:19px; max-width:46ch; margin-top:22px; line-height:1.45}
+
+.grid{display:grid; grid-template-columns:repeat(12,1fr); gap:18px; margin-top:64px}
+.card{position:relative; background:#101011; border:1px solid var(--line); overflow:hidden; min-height:280px; display:flex; flex-direction:column; justify-content:flex-end; padding:26px; transition:.4s; cursor:pointer}
+.card:hover{border-color:var(--amber)}
+.card .id{position:absolute; top:20px; left:24px; font-family:var(--mono); font-size:11px; color:var(--dim)}
+.card .play{position:absolute; top:18px; right:20px; width:38px; height:38px; border:1px solid var(--line); border-radius:50%; display:grid; place-items:center; transition:.3s}
+.card:hover .play{background:var(--amber); border-color:var(--amber)}
+.card .play svg{width:12px; fill:var(--ink)} .card:hover .play svg{fill:#000}
+.card h3{font-size:26px; font-weight:600; letter-spacing:-.02em; z-index:2}
+.card p{font-family:var(--mono); font-size:11px; color:var(--dim); margin-top:8px; text-transform:uppercase; letter-spacing:.08em}
+.card .glow{position:absolute; inset:0; opacity:.4; transition:.5s; background:radial-gradient(120% 80% at 50% 120%,var(--g),transparent 70%)}
+.card:hover .glow{opacity:.8}
+.c1{grid-column:span 7} .c2{grid-column:span 5} .c3{grid-column:span 5} .c4{grid-column:span 7}
+@media(max-width:820px){.card{grid-column:span 12 !important}}
+
+.svc{margin-top:60px; border-top:1px solid var(--line)}
+.svc-row{display:grid; grid-template-columns:80px 1fr auto; gap:24px; align-items:center; padding:34px 0; border-bottom:1px solid var(--line); transition:.3s; cursor:default}
+.svc-row:hover{padding-left:18px; background:linear-gradient(90deg,#101011,transparent)}
+.svc-row .no{font-family:var(--mono); color:var(--amber); font-size:14px}
+.svc-row .nm{font-size:clamp(24px,4vw,40px); font-weight:600; letter-spacing:-.02em}
+.svc-row .ds{font-family:var(--mono); font-size:12px; color:var(--dim); text-align:right; max-width:30ch; line-height:1.6; text-transform:uppercase; letter-spacing:.04em}
+@media(max-width:720px){.svc-row{grid-template-columns:50px 1fr; gap:14px}.svc-row .ds{display:none}}
+
+.tiers{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:60px}
+.tier{border:1px solid var(--line); padding:38px 30px; background:#0e0e0f; transition:.35s; position:relative}
+.tier:hover{transform:translateY(-6px); border-color:var(--amber)}
+.tier.feat{border-color:var(--amber); background:linear-gradient(180deg,#141206,#0e0e0f)}
+.tier .tag{position:absolute; top:-1px; right:-1px; background:var(--amber); color:#000; font-family:var(--mono); font-size:10px; padding:6px 12px; letter-spacing:.1em; text-transform:uppercase}
+.tier .tn{font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.15em; color:var(--dim)}
+.tier .pr{font-size:46px; font-weight:800; letter-spacing:-.03em; margin:18px 0 4px}
+.tier .pr small{font-size:15px; font-weight:400; color:var(--dim); font-family:var(--mono)}
+.tier ul{list-style:none; margin-top:26px; display:flex; flex-direction:column; gap:14px}
+.tier li{font-size:15px; color:#cfcabf; padding-left:24px; position:relative; line-height:1.35}
+.tier li::before{content:"+"; position:absolute; left:0; color:var(--amber); font-family:var(--mono)}
+.tier .btn{margin-top:30px; width:100%; justify-content:center}
+@media(max-width:820px){.tiers{grid-template-columns:1fr}}
+
+.steps{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-top:60px}
+.step{padding:30px 24px; border-top:2px solid var(--amber); background:#0e0e0f}
+.step .sn{font-family:var(--mono); font-size:12px; color:var(--amber); letter-spacing:.1em}
+.step h4{font-size:22px; font-weight:600; margin:14px 0 10px; letter-spacing:-.01em}
+.step p{font-size:14px; color:var(--dim); line-height:1.5}
+@media(max-width:820px){.steps{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.steps{grid-template-columns:1fr}}
+
+.band{text-align:center; padding:140px 0; border-top:1px solid var(--line); position:relative; overflow:hidden}
+.band::before{content:""; position:absolute; inset:0; background:radial-gradient(60% 100% at 50% 100%,rgba(240,180,41,.12),transparent)}
+.band h2{font-size:clamp(44px,9vw,120px); font-weight:800; letter-spacing:-.05em; line-height:.9; text-transform:uppercase; position:relative}
+.band .out{color:transparent;-webkit-text-stroke:1.5px var(--amber)}
+.band p{font-family:var(--mono); color:var(--dim); margin-top:24px; text-transform:uppercase; letter-spacing:.1em; font-size:13px; position:relative}
+.band .btn{margin-top:42px; position:relative; font-size:15px; padding:20px 40px}
+
+footer{border-top:1px solid var(--line); padding:50px 0}
+.foot{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; font-family:var(--mono); font-size:12px; color:var(--dim); letter-spacing:.05em}
+.foot a{color:var(--ink); text-decoration:none; opacity:.7} .foot a:hover{color:var(--amber); opacity:1}
+
+.reveal{opacity:0; transform:translateY(40px); transition:1s cubic-bezier(.16,1,.3,1)}
+.reveal.in{opacity:1; transform:none}
+</style>
+</head>
+<body>
+<div class="frame"><i></i><i></i><i></i><i></i></div>
+
+<nav><div class="nav-in">
+  <div class="logo">KADR<span>.</span></div>
+  <div class="nav-links">
+    <a href="#work">Work</a><a href="#services">Services</a>
+    <a href="#pricing">Pricing</a><a href="#start">Start</a>
+  </div>
+</div></nav>
+
+<header><div class="wrap">
+  <div class="tc"><span class="dot"></span> REC · 00:00:04:12 · 24FPS · A-CAM</div>
+  <h1>
+    <span class="line"><em>Every</em></span>
+    <span class="line l2"><em>Frame</em></span>
+    <span class="line l3"><em class="out">Earns It</em></span>
+  </h1>
+  <p class="sub">Kadr is a video editing studio for founders. You send the raw footage — calls, podcasts, talking-head. We hand back <b>scroll-stopping short-form</b> in 48 hours. Captions, cuts, color. No fluff.</p>
+  <div class="cta-row">
+    <a href="#start" class="btn">Book a free edit →</a>
+    <a href="#work" class="btn ghost">See the work</a>
+  </div>
+  <div class="hero-meta">KADR STUDIO<br>EST. 2026<br>SHORT-FORM / B2B<br>48H TURNAROUND</div>
+</div></header>
+
+<div class="marq"><div class="marq-in">
+  REELS <span>◆</span> YOUTUBE SHORTS <span>◆</span> TALKING-HEAD <span>◆</span> PODCAST CLIPS <span>◆</span> CAPTIONS <span>◆</span> COLOR GRADE <span>◆</span> 48H DELIVERY <span>◆</span> REELS <span>◆</span> YOUTUBE SHORTS <span>◆</span> TALKING-HEAD <span>◆</span> PODCAST CLIPS <span>◆</span> CAPTIONS <span>◆</span> COLOR GRADE <span>◆</span> 48H DELIVERY <span>◆</span>
+</div></div>
+
+<section id="work"><div class="wrap">
+  <div class="reveal">
+    <div class="eyebrow">Selected Work</div>
+    <div class="sec-title">Cuts that<br>hold attention</div>
+    <p class="lead">A frame doesn't get to stay unless it earns its place. Every project below was built to survive the first three seconds of a feed.</p>
+  </div>
+  <div class="grid">
+    <div class="card c1 reveal"><div class="glow" style="--g:rgba(240,180,41,.35)"></div><div class="id">REEL_001 · 0:42</div><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><h3>Founder daily — SaaS</h3><p>12M views / 30-day sprint</p></div>
+    <div class="card c2 reveal"><div class="glow" style="--g:rgba(232,68,47,.3)"></div><div class="id">REEL_002 · 0:58</div><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><h3>Podcast → 16 clips</h3><p>One sit-down, two weeks of posts</p></div>
+    <div class="card c3 reveal"><div class="glow" style="--g:rgba(120,180,255,.25)"></div><div class="id">REEL_003 · 1:04</div><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><h3>Course launch promo</h3><p>4-figure day, no ad spend</p></div>
+    <div class="card c4 reveal"><div class="glow" style="--g:rgba(240,180,41,.3)"></div><div class="id">REEL_004 · 0:36</div><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><h3>Coach talking-head series</h3><p>Captioned, graded, 48h each</p></div>
+  </div>
+</div></section>
+
+<section id="services"><div class="wrap">
+  <div class="reveal">
+    <div class="eyebrow">What we do</div>
+    <div class="sec-title">One job:<br>make you postable</div>
+  </div>
+  <div class="svc">
+    <div class="svc-row reveal"><div class="no">01</div><div class="nm">Short-form editing</div><div class="ds">Reels, Shorts & TikTok cut for retention — hook, pace, payoff</div></div>
+    <div class="svc-row reveal"><div class="no">02</div><div class="nm">Captions & motion</div><div class="ds">Animated subtitles, kinetic text, brand-matched styling</div></div>
+    <div class="svc-row reveal"><div class="no">03</div><div class="nm">Podcast repurposing</div><div class="ds">One recording into a fortnight of native clips</div></div>
+    <div class="svc-row reveal"><div class="no">04</div><div class="nm">Color & sound</div><div class="ds">Clean grade, leveled audio, no jump-cut glitches</div></div>
+  </div>
+</div></section>
+
+<section id="pricing"><div class="wrap">
+  <div class="reveal">
+    <div class="eyebrow">Pricing</div>
+    <div class="sec-title">Pick a cadence</div>
+    <p class="lead">Monthly retainers. You send footage, we keep your feed alive. Cancel anytime — first edit is on us.</p>
+  </div>
+  <div class="tiers">
+    <div class="tier reveal"><div class="tn">Starter</div><div class="pr">$900<small>/mo</small></div>
+      <ul><li>8 short-form videos</li><li>48-hour turnaround</li><li>2 revision rounds</li><li>Captions + 9:16 & 1:1</li></ul>
+      <a href="#start" class="btn ghost">Start here</a></div>
+    <div class="tier feat reveal"><div class="tag">Most picked</div><div class="tn">Growth</div><div class="pr">$2,200<small>/mo</small></div>
+      <ul><li>16 short-form videos</li><li>36-hour turnaround</li><li>2 revision rounds</li><li>Custom thumbnails</li><li>All aspect ratios</li></ul>
+      <a href="#start" class="btn">Choose Growth</a></div>
+    <div class="tier reveal"><div class="tn">Scale</div><div class="pr">$4,500<small>/mo</small></div>
+      <ul><li>30 short + 2 long-form</li><li>24-hour priority queue</li><li>Unlimited revisions*</li><li>Thumbnails + strategy call</li></ul>
+      <a href="#start" class="btn ghost">Go Scale</a></div>
+  </div>
+</div></section>
+
+<section id="process"><div class="wrap">
+  <div class="reveal"><div class="eyebrow">How it runs</div><div class="sec-title">From dump<br>to drop</div></div>
+  <div class="steps">
+    <div class="step reveal"><div class="sn">STEP 01</div><h4>Drop footage</h4><p>Upload raw clips to your shared Frame.io folder. No formatting needed.</p></div>
+    <div class="step reveal"><div class="sn">STEP 02</div><h4>We cut</h4><p>Hook-first edit, captions, color, sound — built for the feed it lands on.</p></div>
+    <div class="step reveal"><div class="sn">STEP 03</div><h4>You review</h4><p>Timestamped comments. Two rounds of revisions, no back-and-forth chaos.</p></div>
+    <div class="step reveal"><div class="sn">STEP 04</div><h4>Post & repeat</h4><p>Final files in every ratio, delivered in 48h. Then we do it again.</p></div>
+  </div>
+</div></section>
+
+<div class="band" id="start"><div class="wrap">
+  <h2>Send us<br><span class="out">one video</span></h2>
+  <p>First edit free · no contract · 48-hour turnaround</p>
+  <a href="mailto:hello@kadrhq.com?subject=Free%20edit%20—%20Kadr" class="btn">hello@kadrhq.com →</a>
+</div></div>
+
+<footer><div class="wrap"><div class="foot">
+  <div class="logo" style="font-size:18px">KADR<span style="color:var(--amber)">.</span></div>
+  <div>EVERY FRAME EARNS ITS PLACE</div>
+  <div>© 2026 KADR STUDIO · <a href="mailto:hello@kadrhq.com">hello@kadrhq.com</a></div>
+</div></div></footer>
+
+<script>
+const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.15});
+document.querySelectorAll('.reveal').forEach((el,i)=>{el.style.transitionDelay=(i%4*.08)+'s';io.observe(el)});
+const tc=document.querySelector('.tc');let f=108;
+setInterval(()=>{f++;const ff=String(f%24).padStart(2,'0');const s=String(Math.floor(f/24)%60).padStart(2,'0');tc.innerHTML='<span class="dot"></span> REC · 00:00:'+s+':'+ff+' · 24FPS · A-CAM'},42);
+</script>
+</body>
+</html>
