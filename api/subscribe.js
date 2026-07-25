@@ -13,9 +13,11 @@ export default async function handler(req, res) {
 
   // Accept JSON or form-encoded bodies.
   let email = '';
+  let answers = {};
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
     email = (body.email || '').trim();
+    if (body.answers && typeof body.answers === 'object') answers = body.answers;
   } catch {
     email = (req.body && req.body.email ? String(req.body.email) : '').trim();
   }
@@ -29,6 +31,14 @@ export default async function handler(req, res) {
     return res.status(500).json({ ok: false, error: 'Server not configured.' });
   }
 
+  // Map brief answers onto MailerLite's default subscriber fields (unknown
+  // custom fields are rejected by the API, so only send known keys). The full
+  // brief is logged so it lands in Vercel function logs either way.
+  const fields = {};
+  if (answers.name) fields.name = String(answers.name).slice(0, 120);
+  if (answers.company) fields.company = String(answers.company).slice(0, 120);
+  console.log('brief', JSON.stringify({ email, ...answers }));
+
   try {
     const r = await fetch('https://connect.mailerlite.com/api/subscribers', {
       method: 'POST',
@@ -37,7 +47,7 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
         Accept: 'application/json',
       },
-      body: JSON.stringify({ email, groups: [GROUP_ID] }),
+      body: JSON.stringify({ email, groups: [GROUP_ID], fields }),
     });
 
     // MailerLite returns 200/201 on success, 200 for already-subscribed.

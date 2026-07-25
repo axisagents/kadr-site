@@ -3,340 +3,562 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Kadr | Video editing for founders</title>
-<meta name="description" content="Kadr is a video editing studio for founders. Send us your raw footage and get short-form video back in 48 hours, captioned, cut, and color graded." />
+<title>Kadr — White-label video editing for marketing firms</title>
+<meta name="description" content="Kadr is the white-label edit desk behind mid-size marketing firms in the US and Europe. Short-form, ad cuts and podcast repurposing back in 48 hours, under your name." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Hanken+Grotesk:wght@300..700&family=Schibsted+Grotesk:wght@400..700&family=Instrument+Serif:ital@0;1&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap" rel="stylesheet" />
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232b2738'/><rect x='22' y='26' width='56' height='48' rx='8' fill='none' stroke='%23c8f23a' stroke-width='7'/><rect x='30' y='80' width='10' height='8' rx='2' fill='%23c8f23a'/><rect x='45' y='80' width='10' height='8' rx='2' fill='%23c8f23a'/><rect x='60' y='80' width='10' height='8' rx='2' fill='%23c8f23a'/><path d='M44 38L62 50L44 62Z' fill='%23c8f23a'/></svg>" />
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0a0a'/><rect x='22' y='26' width='56' height='48' rx='10' fill='none' stroke='%23fffaf0' stroke-width='7'/><path d='M44 38L62 50L44 62Z' fill='%23ff4d8b'/></svg>" />
 <style>
+/* ============ Clay design system tokens (DESIGN-clay.md) ============ */
 :root{
-  --bg:#141019; --ink:#efeaf6; --soft:#a79eba; --faint:#615a73;
-  --serif:'Bricolage Grotesque','Hanken Grotesk',sans-serif; --sans:'Hanken Grotesk','Zen Kaku Gothic New',sans-serif;
-  --ital:'Instrument Serif','Bricolage Grotesque',serif;
-  --em:#c8f23a;
-  --lime:#c8f23a; --lime-deep:#b6e22f; --purple:#4a4360; --purple-deep:#2b2738; --violet:#8a7dc4;
-  /* mesh blob tints */
-  --pink:#c8f23a; --peach:#6f63a0; --lav:#8a7dc4; --sky:#5a4f8f; --mint:#aadb1f;
+  --primary:#0a0a0a; --primary-active:#1f1f1f;
+  --ink:#0a0a0a; --body:#3a3a3a; --body-strong:#1a1a1a;
+  --muted:#6a6a6a; --muted-soft:#9a9a9a;
+  --hairline:#e5e5e5; --hairline-soft:#f0f0f0;
+  --canvas:#fffaf0; --surface-soft:#faf5e8; --surface-card:#f5f0e0; --surface-strong:#ebe6d6;
+  --on-primary:#ffffff; --on-dark:#ffffff;
+  --pink:#ff4d8b; --teal:#1a3a3a; --lavender:#b8a4ed; --peach:#ffb084; --ochre:#e8b94a; --mint:#a4d4c5; --coral:#ff6b5a;
+  --display:'Gabarito','Inter',-apple-system,sans-serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  --r-md:12px; --r-lg:16px; --r-xl:24px;
+  --section:96px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  background:var(--bg); color:var(--ink); font-family:var(--sans);
-  overflow-x:hidden; -webkit-font-smoothing:antialiased; line-height:1.5; font-weight:400;
-}
-/* fine grain to keep gradients from banding */
-body::after{
-  content:""; position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:.06; mix-blend-mode:screen;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-::selection{background:var(--lime); color:#141019}
+body{background:var(--canvas); color:var(--ink); font-family:var(--sans); font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased; overflow-x:hidden}
+::selection{background:var(--pink); color:#fff}
+img,video{max-width:100%; display:block}
+a{color:var(--ink)}
 
-/* lime + purple aurora mesh on dark, slowly drifting */
-.mesh{position:fixed; inset:-12%; z-index:-2; filter:blur(54px) saturate(1.3); pointer-events:none; background:var(--bg)}
-.mesh b{position:absolute; border-radius:46%; mix-blend-mode:screen; opacity:.55; animation:drift 26s ease-in-out infinite}
-.mesh b:nth-child(1){width:46vw;height:46vw;left:-4%;top:-6%;background:var(--pink);animation-delay:-2s}
-.mesh b:nth-child(2){width:52vw;height:52vw;right:-8%;top:4%;background:var(--sky);animation-delay:-9s}
-.mesh b:nth-child(3){width:42vw;height:42vw;left:18%;top:40%;background:var(--lav);animation-delay:-14s}
-.mesh b:nth-child(4){width:48vw;height:48vw;right:6%;bottom:-8%;background:var(--peach);animation-delay:-5s}
-.mesh b:nth-child(5){width:38vw;height:38vw;left:-6%;bottom:2%;background:var(--mint);animation-delay:-18s}
-@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(6vw,-4vh) scale(1.12)}66%{transform:translate(-5vw,5vh) scale(.94)}}
+.wrap{max-width:1280px; margin:0 auto; padding:0 min(5vw,48px)}
+section{padding:var(--section) 0}
 
-.wrap{max-width:1140px; margin:0 auto; padding:0 7vw}
+h1,h2,h3,.disp{font-family:var(--display); font-weight:500}
+.d-xl{font-size:clamp(44px,6.5vw,72px); line-height:1; letter-spacing:-2.5px}
+.d-lg{font-size:clamp(36px,4.5vw,56px); line-height:1.05; letter-spacing:-2px}
+.d-md{font-size:clamp(28px,3.4vw,40px); line-height:1.1; letter-spacing:-1px}
+.d-sm{font-size:clamp(24px,2.6vw,32px); line-height:1.15; letter-spacing:-.5px}
+.kicker{font-size:12px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:24px}
+.lede{font-size:18px; line-height:1.55; color:var(--body); max-width:56ch}
 
-/* nav: no box, just floating text */
-nav{position:fixed; top:0; left:0; right:0; z-index:100; padding:30px 7vw; display:flex; justify-content:space-between; align-items:baseline; background:linear-gradient(180deg,rgba(20,16,25,.85),rgba(20,16,25,0)); backdrop-filter:blur(4px)}
-.logo{font-family:var(--serif); font-weight:900; font-size:24px; letter-spacing:.02em; display:flex; align-items:center; gap:11px}
-.logo svg{width:38px; height:38px; display:block; border-radius:9px; flex:none}
-.logo i{font-style:normal; color:var(--em)}
-.nav-links{display:flex; gap:36px; font-family:'Schibsted Grotesk',var(--sans); font-size:14px; font-weight:500; text-transform:uppercase; letter-spacing:.16em}
-.nav-links a{color:var(--ink); text-decoration:none; opacity:.55; transition:.3s}
-.nav-links a:hover{opacity:1}
-@media(max-width:720px){.nav-links{display:none}}
+/* buttons */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; height:44px; padding:12px 20px; border-radius:var(--r-md); font-family:var(--sans); font-size:14px; font-weight:600; line-height:1; text-decoration:none; border:none; cursor:pointer; transition:background .2s,transform .2s}
+.btn-primary{background:var(--primary); color:var(--on-primary)}
+.btn-primary:hover{background:var(--primary-active)}
+.btn-secondary{background:var(--canvas); color:var(--ink); border:1px solid var(--hairline)}
+.btn-on-color{background:var(--canvas); color:var(--ink)}
+.btn[disabled]{background:#e5e5e5; color:var(--muted); cursor:default}
 
-/* hero: flowing, image-led, no frame */
-header{min-height:100vh; display:flex; flex-direction:column; justify-content:center; position:relative; padding:140px 7vw 80px}
-.kicker{font-size:13px; letter-spacing:.34em; text-transform:uppercase; color:var(--soft); margin-bottom:30px; opacity:0; animation:up 1s ease .1s forwards}
-h1{font-family:var(--serif); font-weight:900; font-size:clamp(52px,11.5vw,162px); line-height:.92; letter-spacing:-.02em; max-width:13ch}
-h1 .w{display:inline-block; opacity:0; transform:translateY(.5em); animation:up 1.1s cubic-bezier(.16,1,.3,1) forwards}
-h1 .w:nth-child(2){animation-delay:.1s}h1 .w:nth-child(3){animation-delay:.2s}
-h1 .w:nth-child(4){animation-delay:.3s}h1 .w:nth-child(5){animation-delay:.4s}
-h1 em{font-family:var(--ital); font-style:italic; font-weight:400; color:var(--em); font-size:1.06em; letter-spacing:-.005em}
-@keyframes up{to{opacity:1; transform:none}}
-.sub{max-width:44ch; margin-top:40px; font-size:clamp(18px,2vw,22px); line-height:1.65; color:#ded7ec; font-weight:400; opacity:0; animation:up 1.1s ease .55s forwards}
-.sub b{font-weight:500; color:var(--ink)}
-.sub .hl{background:var(--lime); color:#141019; -webkit-box-decoration-break:clone; box-decoration-break:clone; padding:.12em .2em; border-radius:.06em}
-.sub .hl b{color:#141019; font-weight:700}
-.cta{margin-top:42px; display:flex; gap:34px; align-items:center; flex-wrap:wrap; opacity:0; animation:up 1.1s ease .75s forwards}
-.go{font-family:var(--sans); font-size:16px; font-weight:500; text-decoration:none; color:var(--ink); position:relative; padding-bottom:6px}
-.go::after{content:""; position:absolute; left:0; bottom:0; width:100%; height:2px; background:linear-gradient(90deg,#4a4360,#9fcc1f); transform:scaleX(.34); transform-origin:left; transition:.4s}
-.go:hover::after{transform:scaleX(1)}
-.go.s{color:var(--soft)} .go.s::after{background:var(--faint)}
-.hero-vid{position:absolute; right:7vw; top:50%; transform:translateY(-50%); width:30vw; max-width:380px; aspect-ratio:3/4; border-radius:200px 200px 200px 200px; overflow:hidden; box-shadow:0 40px 90px -30px rgba(120,80,140,.45); opacity:0; animation:up 1.4s ease .9s forwards}
-.hero-vid video{width:100%; height:100%; object-fit:cover}
-@media(max-width:880px){.hero-vid{display:none}}
+/* ============ nav ============ */
+nav{position:sticky; top:0; z-index:100; height:64px; background:var(--canvas); border-bottom:1px solid var(--hairline-soft); display:flex; align-items:center}
+nav .wrap{width:100%; display:flex; align-items:center; justify-content:space-between; gap:24px}
+.logo{display:flex; align-items:center; gap:10px; font-family:var(--display); font-weight:700; font-size:22px; letter-spacing:-.5px; text-decoration:none}
+.logo svg{width:32px; height:32px; border-radius:8px}
+.nav-links{display:flex; gap:28px; font-size:14px; font-weight:500}
+.nav-links a{text-decoration:none; color:var(--body); transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+@media(max-width:860px){.nav-links{display:none}}
 
-/* flowing reveal */
-.r{opacity:0; transform:translateY(46px); transition:1.1s cubic-bezier(.16,1,.3,1)}
+/* ============ hero ============ */
+header{padding:72px 0 var(--section); position:relative; overflow:hidden}
+.hero-grid{display:grid; grid-template-columns:7fr 5fr; gap:48px; align-items:center}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+.hero-copy h1{color:var(--ink)}
+.hero-copy .lede{margin-top:24px}
+.hero-cta{margin-top:32px; display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+.hero-note{margin-top:16px; font-size:13px; font-weight:500; color:var(--muted)}
+.hero-badges{margin-top:40px; display:flex; gap:8px; flex-wrap:wrap}
+.pill{background:var(--surface-card); color:var(--ink); font-size:13px; font-weight:500; border-radius:9999px; padding:6px 14px}
+
+/* hero artifact: clay scene + video */
+.hero-art{position:relative; background:var(--surface-soft); border-radius:var(--r-xl); padding:36px; display:flex; justify-content:center; overflow:hidden}
+.hero-art .clay{position:absolute; border-radius:50%; }
+.clay-1{width:150px; height:150px; left:-40px; bottom:-40px; background:radial-gradient(circle at 32% 28%, #ffc9a4, var(--peach) 62%, #e08b5c)}
+.clay-2{width:90px; height:90px; right:-20px; top:36px; background:radial-gradient(circle at 32% 28%, #d2c4f5, var(--lavender) 62%, #8f7ad0)}
+.clay-3{width:56px; height:56px; left:24px; top:22px; background:radial-gradient(circle at 32% 28%, #ff87ae, var(--pink) 62%, #d63c74)}
+.hero-art video{width:min(300px,68%); aspect-ratio:9/16; object-fit:cover; border-radius:var(--r-lg); position:relative; z-index:1; box-shadow:0 24px 48px -24px rgba(10,10,10,.35)}
+@media(max-width:900px){.hero-art{margin-top:8px}}
+
+/* ============ proof of work ============ */
+.reel-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:48px}
+@media(max-width:1000px){.reel-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.reel-grid{grid-template-columns:1fr}}
+.reel{border-radius:var(--r-xl); padding:20px; display:flex; flex-direction:column; gap:16px; position:relative}
+.reel video{width:100%; border-radius:var(--r-lg); object-fit:cover; cursor:pointer; background:#00000014}
+.reel .rv-9x16{aspect-ratio:9/16}
+.reel .rv-1x1{aspect-ratio:1/1}
+.reel .rv-16x9{aspect-ratio:16/9}
+.reel h3{font-family:var(--sans); font-size:18px; font-weight:600; line-height:1.4; letter-spacing:0}
+.reel p{font-size:14px; line-height:1.55}
+.reel .sound{position:absolute; top:32px; right:32px; z-index:2; width:36px; height:36px; border-radius:9999px; border:none; cursor:pointer; background:rgba(10,10,10,.55); color:#fff; font-size:15px; display:flex; align-items:center; justify-content:center}
+.bg-pink{background:var(--pink); color:var(--on-dark)} .bg-pink p{color:#ffe3ee}
+.bg-teal{background:var(--teal); color:var(--on-dark)} .bg-teal p{color:#c3d4d0}
+.bg-lavender{background:var(--lavender); color:var(--ink)} .bg-lavender p{color:#3d3260}
+.bg-peach{background:var(--peach); color:var(--ink)} .bg-peach p{color:#6b3d1e}
+.bg-ochre{background:var(--ochre); color:var(--ink)} .bg-ochre p{color:#5c4712}
+.bg-cream{background:var(--surface-card); color:var(--ink)} .bg-cream p{color:var(--body)}
+.reel-wide{grid-column:span 2}
+@media(max-width:640px){.reel-wide{grid-column:span 1}}
+
+/* ============ services feature cards ============ */
+.feat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:48px}
+@media(max-width:1000px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.feat-grid{grid-template-columns:1fr}}
+.feat{border-radius:var(--r-xl); padding:32px; min-height:220px; display:flex; flex-direction:column; gap:12px}
+.feat h3{font-family:var(--sans); font-size:18px; font-weight:600; letter-spacing:0}
+.feat p{font-size:15px; line-height:1.55}
+.feat .glyph{width:44px; height:44px; border-radius:9999px; margin-bottom:8px; background:radial-gradient(circle at 32% 28%, rgba(255,255,255,.75), rgba(255,255,255,.15) 62%, rgba(0,0,0,.18))}
+
+/* ============ why us ============ */
+.why{display:grid; grid-template-columns:5fr 7fr; gap:64px; align-items:start}
+@media(max-width:900px){.why{grid-template-columns:1fr; gap:40px}}
+.why-list{display:flex; flex-direction:column}
+.why-item{padding:24px 0; border-top:1px solid var(--hairline); display:grid; grid-template-columns:56px 1fr; gap:20px; align-items:start}
+.why-item:last-child{border-bottom:1px solid var(--hairline)}
+.why-item .num{font-family:var(--display); font-weight:600; font-size:24px; letter-spacing:-.5px; color:var(--muted-soft)}
+.why-item h3{font-family:var(--sans); font-size:16px; font-weight:600; letter-spacing:0; margin-bottom:6px}
+.why-item p{font-size:15px; color:var(--body); max-width:52ch}
+
+/* ============ pricing ============ */
+.price-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:48px}
+@media(max-width:1000px){.price-grid{grid-template-columns:1fr; max-width:520px}}
+.tier{background:var(--canvas); border:1px solid var(--hairline); border-radius:var(--r-lg); padding:32px; display:flex; flex-direction:column; gap:16px}
+.tier .t-name{font-family:var(--display); font-weight:600; font-size:24px; letter-spacing:-.3px}
+.tier .t-amt{font-family:var(--display); font-weight:600; font-size:40px; letter-spacing:-1px}
+.tier .t-amt small{font-family:var(--sans); font-size:14px; font-weight:500; color:var(--muted); letter-spacing:0}
+.tier ul{list-style:none; display:flex; flex-direction:column; gap:10px; font-size:14px; color:var(--body)}
+.tier ul li::before{content:"— "; color:var(--muted-soft)}
+.tier .btn{margin-top:auto}
+.tier-featured{background:var(--teal); border-color:var(--teal); color:var(--on-dark)}
+.tier-featured .t-amt small,.tier-featured ul{color:#c3d4d0}
+.tier-featured ul li::before{color:#6f8a85}
+.tier .t-badge{align-self:flex-start; background:var(--surface-card); color:var(--ink); font-size:12px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; border-radius:9999px; padding:4px 12px}
+
+/* ============ questionnaire ============ */
+#brief{scroll-margin-top:80px}
+.brief-card{background:var(--surface-card); border-radius:var(--r-xl); padding:clamp(28px,5vw,56px); max-width:760px; margin:48px auto 0; position:relative; overflow:hidden}
+.brief-card .clay{position:absolute; border-radius:50%}
+.brief-card .clay-a{width:120px; height:120px; right:-36px; top:-36px; background:radial-gradient(circle at 32% 28%, #f5d98a, var(--ochre) 62%, #b8902e)}
+.brief-card .clay-b{width:72px; height:72px; left:-20px; bottom:48px; background:radial-gradient(circle at 32% 28%, #c8e8dc, var(--mint) 62%, #74a893)}
+.brief-inner{position:relative; z-index:1}
+.progress{display:flex; gap:6px; margin-bottom:32px}
+.progress span{height:4px; flex:1; border-radius:9999px; background:var(--surface-strong); transition:background .3s}
+.progress span.on{background:var(--ink)}
+.q-step{display:none}
+.q-step.on{display:block; animation:qin .35s ease}
+@keyframes qin{from{opacity:0; transform:translateY(10px)}to{opacity:1; transform:none}}
+.q-step h3{margin-bottom:8px}
+.q-step .q-sub{font-size:14px; color:var(--muted); margin-bottom:24px}
+.opts{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+@media(max-width:560px){.opts{grid-template-columns:1fr}}
+.opt{background:var(--canvas); border:1px solid var(--hairline); border-radius:var(--r-md); padding:14px 16px; font-size:14px; font-weight:500; text-align:left; cursor:pointer; font-family:var(--sans); color:var(--ink); transition:border-color .15s, background .15s}
+.opt:hover{border-color:var(--ink)}
+.opt.sel{background:var(--primary); border-color:var(--primary); color:var(--on-primary)}
+.q-nav{display:flex; justify-content:space-between; align-items:center; margin-top:32px}
+.q-back{background:none; border:none; font-family:var(--sans); font-size:14px; font-weight:600; color:var(--muted); cursor:pointer; padding:8px 0; visibility:hidden}
+.q-back.show{visibility:visible}
+.q-fields{display:flex; flex-direction:column; gap:12px}
+.q-fields input{height:44px; background:var(--canvas); border:1px solid var(--hairline); border-radius:var(--r-md); padding:12px 16px; font-family:var(--sans); font-size:16px; color:var(--ink); outline:none; width:100%}
+.q-fields input:focus{border-color:var(--ink)}
+.q-err{display:none; margin-top:14px; font-size:14px; color:#ef4444}
+.q-err.show{display:block}
+.q-done{display:none; text-align:center; padding:24px 0}
+.q-done.on{display:block; animation:qin .35s ease}
+.q-done .clay-check{width:72px; height:72px; margin:0 auto 20px; border-radius:50%; background:radial-gradient(circle at 32% 28%, #ff87ae, var(--pink) 62%, #d63c74); display:flex; align-items:center; justify-content:center; color:#fff; font-size:30px}
+.q-done p{color:var(--body); max-width:40ch; margin:8px auto 0; font-size:15px}
+
+/* ============ cta band + footer ============ */
+.cta-band{background:var(--surface-soft); border-radius:var(--r-xl); padding:clamp(48px,7vw,80px); text-align:center; position:relative; overflow:hidden}
+.cta-band .clay{position:absolute; border-radius:50%}
+.cta-band .clay-l{width:140px; height:140px; left:-40px; bottom:-50px; background:radial-gradient(circle at 32% 28%, #d2c4f5, var(--lavender) 62%, #8f7ad0)}
+.cta-band .clay-r{width:100px; height:100px; right:-24px; top:-30px; background:radial-gradient(circle at 32% 28%, #ff9d8f, var(--coral) 62%, #d0483a)}
+.cta-band p{margin:16px auto 0; max-width:46ch; color:var(--body)}
+.cta-band .btn{margin-top:28px}
+footer{background:var(--surface-soft); margin-top:var(--section); padding:80px 0 40px; color:var(--body); font-size:14px}
+.foot-grid{display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px}
+@media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
+.foot-grid h4{font-family:var(--sans); font-size:13px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--muted); margin-bottom:14px}
+.foot-grid a{display:block; text-decoration:none; color:var(--body); margin-bottom:10px}
+.foot-grid a:hover{color:var(--ink)}
+.foot-base{margin-top:56px; padding-top:24px; border-top:1px solid var(--hairline); display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; color:var(--muted); font-size:13px}
+/* clay mountains at very bottom (Clay signature) */
+.foot-hills{height:90px; margin-top:40px; display:flex; align-items:flex-end; justify-content:center; gap:-20px; overflow:hidden}
+.foot-hills i{display:block; border-radius:50% 50% 0 0}
+.hill-1{width:340px; height:80px; background:radial-gradient(circle at 40% 10%, #ffc9a4, var(--peach) 70%)}
+.hill-2{width:260px; height:62px; background:radial-gradient(circle at 40% 10%, #d2c4f5, var(--lavender) 70%); margin-left:-70px}
+.hill-3{width:300px; height:70px; background:radial-gradient(circle at 40% 10%, #f5d98a, var(--ochre) 70%); margin-left:-60px}
+
+/* reveal */
+.r{opacity:0; transform:translateY(28px); transition:.7s cubic-bezier(.16,1,.3,1)}
 .r.in{opacity:1; transform:none}
-
-/* keep mid-width hero text clear of the floating video */
-@media(min-width:881px) and (max-width:1180px){
-  header h1, header .sub{max-width:58%}
-  .hero-vid{width:34vw}
-}
-
-/* respect reduced-motion and guarantee content is visible without it */
 @media(prefers-reduced-motion:reduce){
-  *,*::after,*::before{animation:none!important; transition:none!important}
+  *{animation:none!important; transition:none!important}
   .r{opacity:1; transform:none}
-  .kicker,.sub,.cta,.hero-vid{opacity:1!important}
-  h1 .w{opacity:1!important; transform:none!important}
-  .mesh b{animation:none!important}
 }
-
-section{padding:130px 0; position:relative}
-.lead{font-family:var(--serif); font-size:clamp(28px,4.4vw,56px); line-height:1.32; font-weight:400; letter-spacing:-.01em; max-width:20ch}
-.lead em{font-family:var(--ital); font-style:italic; font-size:1.08em; color:#141019; position:relative; z-index:0; padding:0 .12em; white-space:nowrap}
-.lead em::before{content:""; position:absolute; z-index:-1; left:-.05em; right:-.05em; top:8%; bottom:6%; background:var(--lime); border-radius:.18em .55em .3em .5em; transform:rotate(-1.2deg); box-shadow:0 0 0 .04em var(--lime)}
-.tag{font-size:13px; letter-spacing:.3em; text-transform:uppercase; color:var(--soft); margin-bottom:34px}
-.body{font-size:27px; line-height:1.6; color:#d4cce4; max-width:54ch; font-weight:400; letter-spacing:-.005em; margin-top:30px}
-.body b{font-weight:500; color:var(--ink)}
-
-/* work: card grid */
-.work-flow{margin-top:54px; display:grid; grid-template-columns:repeat(2,1fr); gap:26px}
-.piece{display:flex; flex-direction:column; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.09); border-radius:22px; overflow:hidden; transition:transform .55s cubic-bezier(.16,1,.3,1),border-color .55s,box-shadow .55s}
-.piece:hover{transform:translateY(-7px); border-color:rgba(200,242,58,.45); box-shadow:0 34px 70px -34px rgba(0,0,0,.75)}
-.piece .ph{position:relative; overflow:hidden}
-.piece img{width:100%; aspect-ratio:16/10; object-fit:cover; display:block; transition:transform .7s cubic-bezier(.16,1,.3,1)}
-.piece:hover img{transform:scale(1.05)}
-.piece>div:last-child{padding:28px 30px 32px}
-.piece h3{font-family:var(--serif); font-size:clamp(24px,2.5vw,32px); font-weight:600; line-height:1.05; letter-spacing:-.01em}
-.piece .meta{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--lime-deep); margin:13px 0 13px}
-.piece p{font-size:17px; line-height:1.62; color:#c8c0d9; font-weight:400}
-@media(max-width:760px){.work-flow{grid-template-columns:1fr; gap:20px}}
-
-/* services: pure flowing type, no rows/borders */
-.svc{margin-top:50px; display:flex; flex-direction:column}
-.svc a{text-decoration:none; color:var(--ink); padding:26px 0; display:flex; align-items:baseline; gap:24px; transition:.4s}
-.svc a:hover{padding-left:22px}
-.svc .n{font-size:14px; color:var(--faint); font-variant-numeric:tabular-nums}
-.svc .t{font-family:var(--serif); font-size:clamp(30px,6vw,68px); font-weight:400; line-height:1; transition:.4s}
-.svc a:hover .t{color:var(--em); font-family:var(--ital); font-style:italic}
-.svc .d{margin-left:auto; font-size:15px; color:#c8c0d9; max-width:27ch; text-align:right; line-height:1.55; font-weight:400}
-@media(max-width:680px){.svc .d{display:none}.svc a{gap:16px}}
-
-/* pricing: flowing statements, no cards */
-.price{margin-top:40px}
-.plan{padding:46px 0; display:grid; grid-template-columns:auto 1fr auto; gap:5vw; align-items:baseline}
-.plan + .plan{border-top:1px solid rgba(255,255,255,.1)}
-.plan .pn{font-family:var(--serif); font-size:clamp(26px,3.4vw,40px); font-weight:500}
-.plan .pf em{font-style:normal; color:#d0c8e0; font-weight:400; font-size:19px; display:block; max-width:34ch; line-height:1.62; margin-top:14px}
-.plan .amt{font-family:var(--serif); font-size:clamp(36px,5vw,64px); font-weight:700; white-space:nowrap; color:var(--ink)}
-.plan .amt small{font-family:var(--sans); font-size:15px; font-weight:300; color:var(--soft)}
-@media(max-width:720px){.plan{grid-template-columns:1fr; gap:14px}.plan .amt{justify-self:start}}
-
-/* process: flowing prose */
-.steps{margin-top:50px; display:flex; flex-direction:column; gap:8px}
-.stp{display:grid; grid-template-columns:120px 1fr; gap:30px; padding:30px 0; align-items:start}
-.stp .sn{font-family:var(--serif); font-size:46px; font-weight:700; color:var(--em); line-height:1}
-.stp h4{font-family:var(--serif); font-size:26px; font-weight:500; margin-bottom:10px}
-.stp p{font-size:19px; color:#d0c8e0; font-weight:400; line-height:1.62; max-width:50ch}
-@media(max-width:560px){.stp{grid-template-columns:1fr; gap:10px}}
-
-/* full-bleed media break */
-.bleed{position:relative; height:60vh; overflow:hidden; margin:40px 0}
-.bleed video{width:100%; height:100%; object-fit:cover; filter:saturate(.9)}
-.bleed::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(20,16,25,.75),transparent 28%,transparent 68%,rgba(20,16,25,.95)),radial-gradient(60% 60% at 50% 50%,transparent,rgba(20,16,25,.45))}
-.bleed .cap{position:absolute; left:7vw; bottom:8vh; font-family:var(--ital); font-style:italic; font-size:clamp(28px,5vw,64px); color:#fff; text-shadow:0 4px 40px rgba(0,0,0,.4); max-width:16ch; line-height:1.1}
-
-/* lead magnet: the Hook Vault opt-in — dark glass, lime accent */
-.vault{padding:120px 0}
-.vault .lead{max-width:24ch}
-.vault .body{margin-top:26px; font-size:22px}
-.optin{margin-top:46px; max-width:560px}
-.optin form{display:flex; gap:14px; align-items:stretch; flex-wrap:wrap}
-.optin input[type=email]{
-  flex:1; min-width:240px; font-family:var(--sans); font-size:16px; font-weight:400;
-  color:var(--ink); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14);
-  border-radius:60px; padding:18px 26px; transition:.3s; outline:none;
-}
-.optin input[type=email]::placeholder{color:var(--faint)}
-.optin input[type=email]:focus{border-color:var(--lime); background:rgba(255,255,255,.08); box-shadow:0 0 0 4px rgba(200,242,58,.16)}
-.optin button{
-  font-family:var(--sans); font-size:16px; font-weight:600; color:#141019; cursor:pointer;
-  border:none; border-radius:60px; padding:18px 34px; white-space:nowrap;
-  background:var(--lime); transition:.35s; box-shadow:0 16px 36px -16px rgba(200,242,58,.55);
-}
-.optin button:hover{background:var(--lime-deep); transform:translateY(-2px); box-shadow:0 20px 44px -16px rgba(200,242,58,.7)}
-.optin .fine{margin-top:16px; font-size:13px; color:var(--soft); font-weight:300; letter-spacing:.02em}
-.optin .ok{margin-top:8px; font-family:var(--ital); font-style:italic; font-size:24px; color:var(--lime); display:none}
-.optin .err{margin-top:12px; font-size:14px; color:#ff9bb0; font-weight:400; display:none}
-.optin .err.show{display:block}
-.optin button[disabled]{opacity:.6; cursor:default; transform:none}
-.optin.done form{display:none}
-.optin.done .fine{display:none}
-.optin.done .err{display:none}
-.optin.done .ok{display:block}
-@media(max-width:560px){.optin button{width:100%}}
-
-/* big closing */
-.band{text-align:center; padding:22vh 7vw}
-.band h2{font-family:var(--serif); font-size:clamp(46px,11vw,150px); font-weight:900; line-height:.95; letter-spacing:-.02em}
-.band h2 em{font-family:var(--ital); font-style:italic; font-weight:400; color:var(--em); font-size:1.05em}
-.band p{margin-top:30px; font-size:15px; letter-spacing:.2em; text-transform:uppercase; color:var(--soft)}
-.band a{display:inline-block; margin-top:38px; font-family:var(--ital); font-size:clamp(24px,4vw,42px); font-style:italic; color:var(--ink); text-decoration:none; position:relative}
-.band a::after{content:""; position:absolute; left:0; bottom:2px; width:100%; height:3px; background:linear-gradient(90deg,#4a4360,#9fcc1f); transform:scaleX(.5); transform-origin:center; transition:.4s}
-.band a:hover::after{transform:scaleX(1)}
-
-footer{padding:60px 7vw; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:18px 28px; font-size:16px; color:#c4bcd6; letter-spacing:.04em}
-footer .logo{font-size:22px}
-footer .logo svg{width:30px!important; height:30px!important}
-footer>div:nth-child(2){text-align:center}
-footer>div:nth-child(3){text-align:right}
-@media(max-width:640px){footer{grid-template-columns:1fr; justify-items:center; text-align:center}footer>div:nth-child(2),footer>div:nth-child(3){text-align:center}}
-footer a{color:var(--ink); text-decoration:none; opacity:.6}footer a:hover{opacity:1}
 </style>
 <noscript><style>.r{opacity:1;transform:none}</style></noscript>
 </head>
 <body>
-<div class="mesh"><b></b><b></b><b></b><b></b><b></b></div>
 
 <nav>
-  <div class="logo"><svg viewBox="0 0 100 100" aria-label="Kadr"><rect width="100" height="100" rx="20" fill="#2b2738"/><rect x="22" y="26" width="56" height="48" rx="8" fill="none" stroke="#c8f23a" stroke-width="7"/><rect x="30" y="80" width="10" height="8" rx="2" fill="#c8f23a"/><rect x="45" y="80" width="10" height="8" rx="2" fill="#c8f23a"/><rect x="60" y="80" width="10" height="8" rx="2" fill="#c8f23a"/><path d="M44 38L62 50L44 62Z" fill="#c8f23a"/></svg>KADR<i>.</i></div>
-  <div class="nav-links"><a href="#work">Work</a><a href="#services">Services</a><a href="#pricing">Pricing</a><a href="#vault">Free vault</a><a href="#start">Start</a></div>
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Kadr home">
+      <svg viewBox="0 0 100 100"><rect width="100" height="100" rx="24" fill="#0a0a0a"/><rect x="22" y="26" width="56" height="48" rx="10" fill="none" stroke="#fffaf0" stroke-width="7"/><path d="M44 38L62 50L44 62Z" fill="#ff4d8b"/></svg>
+      Kadr
+    </a>
+    <div class="nav-links">
+      <a href="#work">Work</a><a href="#services">Services</a><a href="#why">Why Kadr</a><a href="#pricing">Pricing</a>
+    </div>
+    <a href="#brief" class="btn btn-primary">Start your brief</a>
+  </div>
 </nav>
 
-<header>
-  <div class="kicker">Short-form video studio for founders</div>
-  <h1><span class="w">Your</span> <span class="w">footage,</span> <span class="w">finally</span> <span class="w"><em>worth</em></span> <span class="w"><em>posting.</em></span></h1>
-  <p class="sub">You record the calls, the podcasts, the talking-head clips. We cut them into short-form that holds attention, add <b>clean captions</b>, fix the color, and send it back inside 48 hours. You just keep showing up.</p>
-  <div class="cta"><a href="#start" class="go">Get your first edit free →</a><a href="#work" class="go s">See the work</a></div>
-  <div class="hero-vid"><video autoplay muted loop playsinline preload="metadata" src="https://videos.pexels.com/video-files/3209828/3209828-uhd_2560_1440_25fps.mp4"></video></div>
+<header id="top">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <div class="kicker">White-label video editing · US &amp; EU marketing firms</div>
+      <h1 class="d-xl">The edit desk behind your agency.</h1>
+      <p class="lede">Your clients keep asking for more video. Your editors are already underwater. Kadr slots in as your white-label editing bench — short-form, ad cuts and podcast repurposing back in 48 hours, delivered under your name.</p>
+      <div class="hero-cta">
+        <a href="#brief" class="btn btn-primary">Get a pilot edit — free</a>
+        <a href="#work" class="btn btn-secondary">See recent cuts</a>
+      </div>
+      <div class="hero-note">2-minute brief · no call required · first edit on us</div>
+      <div class="hero-badges">
+        <span class="pill">48h turnaround</span>
+        <span class="pill">US + EU timezone cover</span>
+        <span class="pill">Your branding, our hands</span>
+      </div>
+    </div>
+    <div class="hero-art r">
+      <i class="clay clay-1"></i><i class="clay clay-2"></i><i class="clay clay-3"></i>
+      <video autoplay muted loop playsinline preload="metadata" src="videos/work-hook.mp4"></video>
+    </div>
+  </div>
 </header>
 
-<section id="intro"><div class="wrap r">
-  <p class="lead">Most of your footage is fine. The job is finding the parts that <em>actually land</em> and cutting away the rest.</p>
-  <p class="body">You're probably sitting on hours of recordings and no time to edit them. Hand us the raw files and we shape them into something made for the first three seconds of a feed. Paced so people keep watching, captioned so they can follow it on mute, colored so it doesn't look like a webcam. You post more often. Nobody can tell we were involved.</p>
-</div></section>
-
-<section id="work"><div class="wrap">
-  <div class="tag r">Selected Work</div>
-  <div class="work-flow">
-    <div class="piece r">
-      <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=1000&q=72&auto=format&fit=crop" alt="founder content" loading="lazy" />
-      <div><h3>Founder daily</h3><div class="meta">SaaS · 30-day sprint</div><p>One afternoon of recording became a month of posts. We built each clip around its hook and kept it moving so people stayed.</p></div>
+<section id="work">
+  <div class="wrap">
+    <div class="kicker r">Recent cuts</div>
+    <h2 class="d-lg r">Work your clients would sign off on.</h2>
+    <p class="lede r" style="margin-top:16px">Real deliverables from live retainers. Tap any clip for sound.</p>
+    <div class="reel-grid">
+      <div class="reel bg-pink r">
+        <video class="rv-9x16" muted loop playsinline preload="metadata" src="videos/work-hook.mp4"></video>
+        <div><h3>Hook-first short</h3><p>Built around the first three seconds. Cut, captioned and graded for feed.</p></div>
+      </div>
+      <div class="reel bg-teal r">
+        <video class="rv-9x16" muted loop playsinline preload="metadata" src="videos/work-mukul-1.mp4"></video>
+        <div><h3>Founder talking-head</h3><p>Weekly series — same look, same schedule, zero chasing.</p></div>
+      </div>
+      <div class="reel bg-lavender r">
+        <video class="rv-9x16" muted loop playsinline preload="metadata" src="videos/work-mukul-2.mp4"></video>
+        <div><h3>Punch-cut promo</h3><p>Eleven seconds, one message, no wasted frames.</p></div>
+      </div>
+      <div class="reel bg-peach reel-wide r">
+        <video class="rv-16x9" muted loop playsinline preload="metadata" src="videos/work-sadha-1.mp4"></video>
+        <div><h3>Long-form repurposed</h3><p>One sit-down recording, recut into a landscape edit and a stack of shorts.</p></div>
+      </div>
+      <div class="reel bg-ochre r">
+        <video class="rv-1x1" muted loop playsinline preload="metadata" src="videos/work-sadha-2.mp4"></video>
+        <div><h3>Square social cut</h3><p>Framed for the formats your clients actually run.</p></div>
+      </div>
     </div>
-    <div class="piece r">
-      <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?w=1000&q=72&auto=format&fit=crop" alt="podcast clips" loading="lazy" />
-      <div><h3>Podcast, repurposed</h3><div class="meta">One sit-down, sixteen clips</div><p>We pull the sharpest few minutes out of a long conversation and turn each one into a captioned clip that stands on its own.</p></div>
+  </div>
+</section>
+
+<section id="services" style="background:var(--surface-soft)">
+  <div class="wrap">
+    <div class="kicker r">Services</div>
+    <h2 class="d-lg r">Everything your video retainers promise.</h2>
+    <div class="feat-grid">
+      <div class="feat bg-pink r"><i class="glyph"></i><h3>Short-form social</h3><p>Reels, Shorts and TikToks cut to hold attention — hook-first pacing, animated captions, platform-native ratios.</p></div>
+      <div class="feat bg-teal r"><i class="glyph"></i><h3>Paid ad cuts</h3><p>Variation packs for performance teams. Hooks, lengths and CTAs iterated so your media buyers always have fresh creative.</p></div>
+      <div class="feat bg-lavender r"><i class="glyph"></i><h3>Podcast repurposing</h3><p>One client recording becomes weeks of clips. We find the sharp minutes and make each stand alone.</p></div>
+      <div class="feat bg-peach r"><i class="glyph"></i><h3>Motion captions &amp; graphics</h3><p>Branded subtitle systems, lower thirds and kinetic text matched to each client's guidelines.</p></div>
+      <div class="feat bg-ochre r"><i class="glyph"></i><h3>Color &amp; sound</h3><p>Clean grades and leveled audio so webcam footage stops looking like webcam footage.</p></div>
+      <div class="feat bg-cream r"><i class="glyph"></i><h3>White-label delivery</h3><p>Files named your way, delivered into your systems, invisible to your clients. We're your team, full stop.</p></div>
     </div>
-    <div class="piece r">
-      <img src="https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=1000&q=72&auto=format&fit=crop" alt="launch promo" loading="lazy" />
-      <div><h3>Launch promo</h3><div class="meta">Course · no ad spend</div><p>A short, fast reel for a launch week. Tight enough that the offer felt like a sure thing.</p></div>
+  </div>
+</section>
+
+<section id="why">
+  <div class="wrap why">
+    <div>
+      <div class="kicker r">Why Kadr</div>
+      <h2 class="d-lg r">Capacity without headcount.</h2>
+      <p class="lede r" style="margin-top:16px">Hiring an editor takes months and $70k+. A retainer with us takes one brief.</p>
     </div>
-    <div class="piece r">
-      <img src="https://images.unsplash.com/photo-1496559249665-c7e2874707ea?w=1000&q=72&auto=format&fit=crop" alt="talking head series" loading="lazy" />
-      <div><h3>Talking-head series</h3><div class="meta">Coach · 48h each</div><p>A new episode every week the client never has to chase. Captioned, graded, and out on the same schedule every time.</p></div>
+    <div class="why-list">
+      <div class="why-item r"><div class="num">01</div><div><h3>Overflow absorbed</h3><p>Campaign crunch, new client win, editor on leave — send the spike to us instead of burning your team out or turning work away.</p></div></div>
+      <div class="why-item r"><div class="num">02</div><div><h3>US &amp; EU working hours</h3><p>Briefs land in your morning, edits land before your next stand-up. We overlap with both Eastern and Central European time.</p></div></div>
+      <div class="why-item r"><div class="num">03</div><div><h3>Brand-safe by default</h3><p>Every client gets a locked style sheet — fonts, colors, caption system, logo rules. Edit ten looks like edit one.</p></div></div>
+      <div class="why-item r"><div class="num">04</div><div><h3>Flat monthly cost</h3><p>One line on your P&amp;L that scales with your retainers. Mark it up or pass it through — most partners run 2–3× margin on our rate.</p></div></div>
     </div>
   </div>
-</div></section>
+</section>
 
-<div class="bleed r">
-  <video autoplay muted loop playsinline preload="none" src="https://videos.pexels.com/video-files/2099568/2099568-hd_1920_1080_30fps.mp4"></video>
-  <div class="cap">Cut for wherever it lands.</div>
-</div>
-
-<section id="services"><div class="wrap">
-  <div class="tag r">What we do</div>
-  <p class="lead r">We do one thing. We make you <em>easy to post.</em></p>
-  <div class="svc">
-    <a href="#start" class="r"><span class="n">01</span><span class="t">Short-form editing</span><span class="d">Reels, Shorts and TikToks cut to keep people watching</span></a>
-    <a href="#start" class="r"><span class="n">02</span><span class="t">Captions & motion</span><span class="d">Animated subtitles and text that matches your brand</span></a>
-    <a href="#start" class="r"><span class="n">03</span><span class="t">Podcast repurposing</span><span class="d">One recording becomes two weeks of clips</span></a>
-    <a href="#start" class="r"><span class="n">04</span><span class="t">Color & sound</span><span class="d">Clean grade, leveled audio, no rough edges</span></a>
+<section id="pricing" style="background:var(--surface-soft)">
+  <div class="wrap">
+    <div class="kicker r">Pricing</div>
+    <h2 class="d-lg r">Retainers that map to your book.</h2>
+    <div class="price-grid">
+      <div class="tier r">
+        <div class="t-name">Bench</div>
+        <div class="t-amt">$1,900<small> /mo</small></div>
+        <ul>
+          <li>20 short-form edits a month</li>
+          <li>48-hour turnaround</li>
+          <li>Two revision rounds per edit</li>
+          <li>Captions in every ratio</li>
+          <li>One brand style sheet</li>
+        </ul>
+        <a href="#brief" class="btn btn-secondary">Start with Bench</a>
+      </div>
+      <div class="tier tier-featured r">
+        <div class="t-badge">Most partners</div>
+        <div class="t-name">Studio</div>
+        <div class="t-amt">$3,800<small> /mo</small></div>
+        <ul>
+          <li>45 short-form edits a month</li>
+          <li>36-hour turnaround</li>
+          <li>Ad variation packs included</li>
+          <li>Up to 5 client style sheets</li>
+          <li>Dedicated editor pod</li>
+          <li>Slack channel with your team</li>
+        </ul>
+        <a href="#brief" class="btn btn-on-color">Start with Studio</a>
+      </div>
+      <div class="tier r">
+        <div class="t-name">Network</div>
+        <div class="t-amt">Custom</div>
+        <ul>
+          <li>75+ edits, long-form included</li>
+          <li>24-hour priority queue</li>
+          <li>Unlimited client style sheets</li>
+          <li>Monthly strategy call</li>
+          <li>Volume pricing</li>
+        </ul>
+        <a href="#brief" class="btn btn-secondary">Talk volume</a>
+      </div>
+    </div>
   </div>
-</div></section>
+</section>
 
-<section id="pricing"><div class="wrap">
-  <div class="tag r">Pricing</div>
-  <p class="lead r">Pick a pace. <em>The first edit is free.</em></p>
-  <div class="price">
-    <div class="plan r"><div class="pn">Starter</div><div class="pf"><em>Eight videos a month, back in 48 hours, two rounds of revisions, captioned for vertical and square.</em></div><div class="amt">$900<small> /mo</small></div></div>
-    <div class="plan r"><div class="pn">Growth</div><div class="pf"><em>Sixteen videos a month, back in 36 hours, custom thumbnails, every aspect ratio you need. This is where most founders land.</em></div><div class="amt">$2,200<small> /mo</small></div></div>
-    <div class="plan r"><div class="pn">Scale</div><div class="pf"><em>Thirty short-form plus two long-form a month, a 24-hour priority queue, unlimited revisions, and a monthly strategy call.</em></div><div class="amt">$4,500<small> /mo</small></div></div>
+<section id="brief">
+  <div class="wrap">
+    <div style="text-align:center">
+      <div class="kicker r">Start your brief</div>
+      <h2 class="d-lg r">Tell us about your firm.<br>Get a free pilot edit.</h2>
+      <p class="lede r" style="margin:16px auto 0">Five quick questions. We'll come back within one business day with a scoped recommendation — and cut your first edit free so you can judge the work, not the pitch.</p>
+    </div>
+
+    <div class="brief-card r">
+      <i class="clay clay-a"></i><i class="clay clay-b"></i>
+      <div class="brief-inner">
+        <div class="progress" aria-hidden="true"><span class="on"></span><span></span><span></span><span></span><span></span></div>
+
+        <form id="briefForm" novalidate>
+          <div class="q-step on" data-q="firm">
+            <h3 class="d-sm">What kind of team are you?</h3>
+            <p class="q-sub">So we speak your language from the first reply.</p>
+            <div class="opts">
+              <button type="button" class="opt" data-v="Marketing / creative agency">Marketing or creative agency</button>
+              <button type="button" class="opt" data-v="Performance / media agency">Performance or media agency</button>
+              <button type="button" class="opt" data-v="Brand in-house team">Brand in-house team</button>
+              <button type="button" class="opt" data-v="Production studio">Production studio</button>
+            </div>
+          </div>
+
+          <div class="q-step" data-q="volume">
+            <h3 class="d-sm">How many edits do you need monthly?</h3>
+            <p class="q-sub">Across all clients — best guess is fine.</p>
+            <div class="opts">
+              <button type="button" class="opt" data-v="Under 10">Under 10</button>
+              <button type="button" class="opt" data-v="10–25">10–25</button>
+              <button type="button" class="opt" data-v="25–50">25–50</button>
+              <button type="button" class="opt" data-v="50+">50+</button>
+            </div>
+          </div>
+
+          <div class="q-step" data-q="content" data-multi="1">
+            <h3 class="d-sm">What are you delivering?</h3>
+            <p class="q-sub">Pick everything that applies, then continue.</p>
+            <div class="opts">
+              <button type="button" class="opt" data-v="Short-form social">Short-form social</button>
+              <button type="button" class="opt" data-v="Paid ad creative">Paid ad creative</button>
+              <button type="button" class="opt" data-v="Podcast repurposing">Podcast repurposing</button>
+              <button type="button" class="opt" data-v="Long-form / YouTube">Long-form / YouTube</button>
+            </div>
+            <div class="q-nav" style="margin-top:24px; justify-content:flex-end">
+              <button type="button" class="btn btn-primary" id="contentNext">Continue</button>
+            </div>
+          </div>
+
+          <div class="q-step" data-q="turnaround">
+            <h3 class="d-sm">What turnaround keeps your clients happy?</h3>
+            <p class="q-sub">We'll scope the pod size around this.</p>
+            <div class="opts">
+              <button type="button" class="opt" data-v="24 hours">24 hours</button>
+              <button type="button" class="opt" data-v="48 hours">48 hours</button>
+              <button type="button" class="opt" data-v="Weekly batches">Weekly batches</button>
+              <button type="button" class="opt" data-v="Depends on campaign">Depends on campaign</button>
+            </div>
+          </div>
+
+          <div class="q-step" data-q="contact">
+            <h3 class="d-sm">Where do we send the pilot edit?</h3>
+            <p class="q-sub">One reply with a scoped plan and your free edit. No sequence, no sales calls unless you ask.</p>
+            <div class="q-fields">
+              <input type="text" name="name" placeholder="Your name" autocomplete="name" />
+              <input type="text" name="company" placeholder="Firm name" autocomplete="organization" />
+              <input type="email" name="email" placeholder="you@yourfirm.com" autocomplete="email" required />
+            </div>
+            <div class="q-nav" style="margin-top:24px; justify-content:flex-end">
+              <button type="submit" class="btn btn-primary" id="briefSubmit">Send my brief →</button>
+            </div>
+          </div>
+
+          <div class="q-nav">
+            <button type="button" class="q-back" id="qBack">← Back</button>
+            <span style="font-size:13px; color:var(--muted)" id="qCount">1 of 5</span>
+          </div>
+          <p class="q-err" role="alert" id="qErr"></p>
+        </form>
+
+        <div class="q-done" id="qDone">
+          <div class="clay-check">✓</div>
+          <h3 class="d-sm">Brief received.</h3>
+          <p>We'll reply within one business day with a scoped recommendation and next steps for your free pilot edit. Check your inbox.</p>
+        </div>
+      </div>
+    </div>
   </div>
-</div></section>
+</section>
 
-<section id="process"><div class="wrap">
-  <div class="tag r">How it runs</div>
-  <p class="lead r">From raw files <em>to posted.</em></p>
-  <div class="steps">
-    <div class="stp r"><div class="sn">01</div><div><h4>Drop your footage</h4><p>Dump the raw clips in a shared folder. Don't rename them, don't sort them, don't think about it.</p></div></div>
-    <div class="stp r"><div class="sn">02</div><div><h4>We cut</h4><p>Hook first, then captions, color, and sound, all shaped for the exact place it's going.</p></div></div>
-    <div class="stp r"><div class="sn">03</div><div><h4>You review</h4><p>Leave timestamped notes in one spot. Two clean rounds, never an endless back and forth.</p></div></div>
-    <div class="stp r"><div class="sn">04</div><div><h4>Post & repeat</h4><p>Final files in every ratio within 48 hours. Then we go again next week.</p></div></div>
+<section>
+  <div class="wrap">
+    <div class="cta-band r">
+      <i class="clay clay-l"></i><i class="clay clay-r"></i>
+      <h2 class="d-md">Send one project. Judge the cut.</h2>
+      <p>The pilot edit is free and yours to keep either way. If the work isn't better than what you're shipping today, that's the end of it.</p>
+      <a href="#brief" class="btn btn-primary">Start your brief</a>
+    </div>
   </div>
-</div></section>
-
-<section class="vault" id="vault"><div class="wrap">
-  <div class="tag r">Free · no pitch</div>
-  <p class="lead r">The hooks that <em>earn the scroll.</em></p>
-  <p class="body r">Thirty short-form hooks we've watched stop founders' feeds cold, plus the exact 48-hour checklist we run every edit through. Take them and use them. If you'd rather we just do it, the free edit is right below.</p>
-  <!--
-    Wired to /api/subscribe (Vercel function) which adds the email to the
-    MailerLite "Hook Vault" group via the server-side MAILERLITE_API_KEY.
-    Joining the group triggers the welcome automation (built in the MailerLite UI)
-    that delivers the Hook Vault link and the follow-up drip.
-  -->
-  <div class="optin r">
-    <form id="vaultForm" novalidate>
-      <input type="email" name="email" placeholder="you@company.com" required autocomplete="email" />
-      <button type="submit">Send me the vault →</button>
-    </form>
-    <p class="fine">One email with the link. No spam, unsubscribe any time.</p>
-    <p class="err" role="alert"></p>
-    <p class="ok">Sent. Check your inbox in a minute, it's on the way.</p>
-  </div>
-</div></section>
-
-<div class="band" id="start">
-  <h2 class="r">Send us<br><em>one video.</em></h2>
-  <p class="r">First edit free · no contract · back in 48 hours</p>
-  <a href="mailto:hello@kadrhq.com?subject=Free%20edit%20with%20Kadr" class="r">hello@kadrhq.com →</a>
-</div>
+</section>
 
 <footer>
-  <div class="logo"><svg viewBox="0 0 100 100" aria-label="Kadr" style="width:24px;height:24px"><rect width="100" height="100" rx="20" fill="#2b2738"/><rect x="22" y="26" width="56" height="48" rx="8" fill="none" stroke="#c8f23a" stroke-width="7"/><rect x="30" y="80" width="10" height="8" rx="2" fill="#c8f23a"/><rect x="45" y="80" width="10" height="8" rx="2" fill="#c8f23a"/><rect x="60" y="80" width="10" height="8" rx="2" fill="#c8f23a"/><path d="M44 38L62 50L44 62Z" fill="#c8f23a"/></svg>KADR<i style="font-style:normal;color:#c8f23a">.</i></div>
-  <div>We cut, you post</div>
-  <div>© 2026 Kadr Studio · <a href="mailto:hello@kadrhq.com">hello@kadrhq.com</a></div>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="logo" href="#top" style="margin-bottom:14px">
+          <svg viewBox="0 0 100 100" style="width:28px;height:28px"><rect width="100" height="100" rx="24" fill="#0a0a0a"/><rect x="22" y="26" width="56" height="48" rx="10" fill="none" stroke="#fffaf0" stroke-width="7"/><path d="M44 38L62 50L44 62Z" fill="#ff4d8b"/></svg>
+          Kadr
+        </a>
+        <p style="max-width:32ch">The white-label edit desk behind mid-size marketing firms in the US and Europe.</p>
+      </div>
+      <div>
+        <h4>Site</h4>
+        <a href="#work">Work</a><a href="#services">Services</a><a href="#why">Why Kadr</a><a href="#pricing">Pricing</a>
+      </div>
+      <div>
+        <h4>Start</h4>
+        <a href="#brief">Your brief</a><a href="#brief">Pilot edit</a>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <a href="mailto:hello@kadrhq.com">hello@kadrhq.com</a>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>© 2026 Kadr Studio</span>
+      <span>We cut, you post.</span>
+    </div>
+  </div>
+  <div class="foot-hills" aria-hidden="true"><i class="hill-2"></i><i class="hill-1"></i><i class="hill-3"></i></div>
 </footer>
 
 <script>
-const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.16});
+// scroll reveal
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.14});
 document.querySelectorAll('.r').forEach(el=>io.observe(el));
 
-// Hook Vault opt-in -> /api/subscribe
-const vf=document.getElementById('vaultForm');
-if(vf){
-  const wrap=vf.closest('.optin'), err=wrap.querySelector('.err'), btn=vf.querySelector('button');
-  vf.addEventListener('submit',async(e)=>{
-    e.preventDefault();
-    err.classList.remove('show');
-    const email=vf.email.value.trim();
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){err.textContent='Enter a valid email.';err.classList.add('show');return}
-    btn.disabled=true; btn.textContent='Sending…';
-    try{
-      const r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
-      if(r.ok){wrap.classList.add('done');return}
-      const d=await r.json().catch(()=>({}));
-      err.textContent=d.error||'Something went wrong. Try again.';err.classList.add('show');
-    }catch{
-      err.textContent='Network error. Try again.';err.classList.add('show');
-    }
-    btn.disabled=false; btn.textContent='Send me the vault →';
-  });
+// reel videos: play on view, tap toggles sound
+const vio=new IntersectionObserver(es=>{es.forEach(e=>{const v=e.target; if(e.isIntersecting){v.play().catch(()=>{})}else{v.pause()}})},{threshold:.3});
+document.querySelectorAll('.reel video').forEach(v=>{
+  vio.observe(v);
+  v.addEventListener('click',()=>{v.muted=!v.muted; if(v.muted===false)v.play().catch(()=>{})});
+});
+
+// ============ questionnaire ============
+const form=document.getElementById('briefForm');
+const steps=[...form.querySelectorAll('.q-step')];
+const dots=[...document.querySelectorAll('.progress span')];
+const backBtn=document.getElementById('qBack');
+const count=document.getElementById('qCount');
+const errEl=document.getElementById('qErr');
+const answers={};
+let cur=0;
+
+function show(i){
+  cur=i;
+  steps.forEach((s,k)=>s.classList.toggle('on',k===i));
+  dots.forEach((d,k)=>d.classList.toggle('on',k<=i));
+  backBtn.classList.toggle('show',i>0);
+  count.textContent=(i+1)+' of '+steps.length;
+  errEl.classList.remove('show');
 }
+
+steps.forEach((step,i)=>{
+  const multi=step.dataset.multi==='1';
+  step.querySelectorAll('.opt').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      if(multi){
+        btn.classList.toggle('sel');
+        answers[step.dataset.q]=[...step.querySelectorAll('.opt.sel')].map(b=>b.dataset.v);
+      }else{
+        step.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));
+        btn.classList.add('sel');
+        answers[step.dataset.q]=btn.dataset.v;
+        setTimeout(()=>show(Math.min(i+1,steps.length-1)),240);
+      }
+    });
+  });
+});
+
+document.getElementById('contentNext').addEventListener('click',()=>{
+  const step=steps[cur];
+  if(!(answers[step.dataset.q]||[]).length){errEl.textContent='Pick at least one.';errEl.classList.add('show');return}
+  show(cur+1);
+});
+
+backBtn.addEventListener('click',()=>show(Math.max(cur-1,0)));
+
+form.addEventListener('submit',async e=>{
+  e.preventDefault();
+  errEl.classList.remove('show');
+  const email=form.email.value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){errEl.textContent='Enter a valid work email.';errEl.classList.add('show');return}
+  answers.name=form.name.value.trim();
+  answers.company=form.company.value.trim();
+  const btn=document.getElementById('briefSubmit');
+  btn.disabled=true; btn.textContent='Sending…';
+  try{
+    const r=await fetch('/api/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,answers})});
+    if(r.ok){
+      form.style.display='none';
+      document.querySelector('.progress').style.display='none';
+      document.getElementById('qDone').classList.add('on');
+      return;
+    }
+    const d=await r.json().catch(()=>({}));
+    errEl.textContent=d.error||'Something went wrong. Try again.';errEl.classList.add('show');
+  }catch{
+    errEl.textContent='Network error. Try again.';errEl.classList.add('show');
+  }
+  btn.disabled=false; btn.textContent='Send my brief →';
+});
 </script>
 </body>
 </html>
