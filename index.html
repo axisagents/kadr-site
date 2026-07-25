@@ -87,6 +87,11 @@ header{padding:72px 0 var(--section); position:relative; overflow:hidden}
 @media(max-width:640px){.reel-grid{grid-template-columns:1fr}}
 .reel{border-radius:var(--r-xl); padding:20px; display:flex; flex-direction:column; gap:16px; position:relative}
 .reel video{width:100%; border-radius:var(--r-lg); object-fit:cover; cursor:pointer; background:#00000014}
+.vwrap{position:relative}
+.vwrap .play{position:absolute; inset:0; margin:auto; width:64px; height:64px; border-radius:9999px; border:none; cursor:pointer; background:rgba(10,10,10,.72); color:#fff; display:flex; align-items:center; justify-content:center; transition:transform .2s, background .2s; z-index:2}
+.vwrap .play:hover{transform:scale(1.08); background:rgba(10,10,10,.88)}
+.vwrap .play svg{width:26px; height:26px; margin-left:3px}
+.vwrap.playing .play{display:none}
 .reel .rv-9x16{aspect-ratio:9/16}
 .reel .rv-1x1{aspect-ratio:1/1}
 .reel .rv-16x9{aspect-ratio:16/9}
@@ -246,23 +251,23 @@ footer{background:var(--surface-soft); margin-top:var(--section); padding:80px 0
     <p class="lede r" style="margin-top:16px">Real deliverables from live retainers. Tap any clip for sound.</p>
     <div class="reel-grid">
       <div class="reel bg-pink r">
-        <video class="rv-9x16" muted loop playsinline preload="none" poster="videos/poster-hook.jpg" data-src="videos/work-hook.mp4"></video>
+        <div class="vwrap"><video class="rv-9x16" muted loop playsinline preload="none" poster="videos/poster-hook.jpg" data-src="videos/work-hook.mp4"></video><button class="play" type="button" aria-label="Play video"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5L18 12L8 18.5Z" fill="currentColor"/></svg></button></div>
         <div><h3>Hook-first short</h3><p>Built around the first three seconds. Cut, captioned and graded for feed.</p></div>
       </div>
       <div class="reel bg-teal r">
-        <video class="rv-9x16" muted loop playsinline preload="none" poster="videos/poster-mukul-1.jpg" data-src="videos/work-mukul-1.mp4"></video>
+        <div class="vwrap"><video class="rv-9x16" muted loop playsinline preload="none" poster="videos/poster-mukul-1.jpg" data-src="videos/work-mukul-1.mp4"></video><button class="play" type="button" aria-label="Play video"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5L18 12L8 18.5Z" fill="currentColor"/></svg></button></div>
         <div><h3>Founder talking-head</h3><p>Weekly series — same look, same schedule, zero chasing.</p></div>
       </div>
       <div class="reel bg-lavender r">
-        <video class="rv-9x16" muted loop playsinline preload="none" poster="videos/poster-mukul-2.jpg" data-src="videos/work-mukul-2.mp4"></video>
+        <div class="vwrap"><video class="rv-9x16" muted loop playsinline preload="none" poster="videos/poster-mukul-2.jpg" data-src="videos/work-mukul-2.mp4"></video><button class="play" type="button" aria-label="Play video"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5L18 12L8 18.5Z" fill="currentColor"/></svg></button></div>
         <div><h3>Punch-cut promo</h3><p>Eleven seconds, one message, no wasted frames.</p></div>
       </div>
       <div class="reel bg-peach reel-wide r">
-        <video class="rv-16x9" muted loop playsinline preload="none" poster="videos/poster-sadha-1.jpg" data-src="videos/work-sadha-1.mp4"></video>
+        <div class="vwrap"><video class="rv-16x9" muted loop playsinline preload="none" poster="videos/poster-sadha-1.jpg" data-src="videos/work-sadha-1.mp4"></video><button class="play" type="button" aria-label="Play video"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5L18 12L8 18.5Z" fill="currentColor"/></svg></button></div>
         <div><h3>Long-form repurposed</h3><p>One sit-down recording, recut into a landscape edit and a stack of shorts.</p></div>
       </div>
       <div class="reel bg-ochre r">
-        <video class="rv-1x1" muted loop playsinline preload="none" poster="videos/poster-sadha-2.jpg" data-src="videos/work-sadha-2.mp4"></video>
+        <div class="vwrap"><video class="rv-1x1" muted loop playsinline preload="none" poster="videos/poster-sadha-2.jpg" data-src="videos/work-sadha-2.mp4"></video><button class="play" type="button" aria-label="Play video"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5L18 12L8 18.5Z" fill="currentColor"/></svg></button></div>
         <div><h3>Square social cut</h3><p>Framed for the formats your clients actually run.</p></div>
       </div>
     </div>
@@ -444,7 +449,7 @@ footer{background:var(--surface-soft); margin-top:var(--section); padding:80px 0
       <i class="clay clay-l"></i><i class="clay clay-r"></i>
       <h2 class="d-md">Send one project. Judge the cut.</h2>
       <p>The pilot edit is free and yours to keep either way. If the work isn't better than what you're shipping today, that's the end of it.</p>
-      <a href="#brief" class="btn btn-primary">Start your brief</a>
+      <a href="mailto:kadrcuts@gmail.com?subject=Pilot%20edit%20request&amp;body=Hi%20Kadr%2C%0D%0A%0D%0AI%27d%20like%20to%20claim%20the%20free%20pilot%20edit.%0D%0A%0D%0ABEFORE%20YOU%20SEND%3A%20attach%20your%20video%20file%20to%20this%20email.%20If%20it%27s%20too%20large%20to%20attach%2C%20paste%20a%20Google%20Drive%2C%20Dropbox%20or%20WeTransfer%20link%20on%20the%20line%20below.%0D%0A%0D%0AVideo%20link%20%28if%20not%20attached%29%3A%0D%0A%0D%0A%0D%0AFirm%20name%3A%0D%0AWhat%20the%20edit%20is%20for%3A%0D%0APreferred%20length%3A%0D%0ADeadline%3A%0D%0A%0D%0AThanks%2C%0D%0A" class="btn btn-primary">Email us your video</a>
     </div>
   </div>
 </section>
@@ -485,11 +490,23 @@ footer{background:var(--surface-soft); margin-top:var(--section); padding:80px 0
 const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.14});
 document.querySelectorAll('.r').forEach(el=>io.observe(el));
 
-// reel videos: play on view, tap toggles sound
-const vio=new IntersectionObserver(es=>{es.forEach(e=>{const v=e.target; if(e.isIntersecting){if(!v.src&&v.dataset.src){v.src=v.dataset.src}v.play().catch(()=>{})}else{v.pause()}})},{threshold:.3,rootMargin:'200px 0px'});
-document.querySelectorAll('.reel video').forEach(v=>{
+// reel videos: click-to-play with sound, one at a time
+const reelVids=[...document.querySelectorAll('.reel video')];
+function stopReel(v){v.pause(); v.closest('.vwrap').classList.remove('playing')}
+function playReel(v){
+  reelVids.forEach(o=>{if(o!==v)stopReel(o)});
+  if(!v.src&&v.dataset.src){v.src=v.dataset.src}
+  v.muted=false;
+  v.closest('.vwrap').classList.add('playing');
+  v.play().catch(()=>v.closest('.vwrap').classList.remove('playing'));
+}
+// pause when scrolled out of view
+const vio=new IntersectionObserver(es=>{es.forEach(e=>{if(!e.isIntersecting&&!e.target.paused)stopReel(e.target)})},{threshold:.2});
+reelVids.forEach(v=>{
   vio.observe(v);
-  v.addEventListener('click',()=>{v.muted=!v.muted; if(v.muted===false)v.play().catch(()=>{})});
+  v.closest('.vwrap').querySelector('.play').addEventListener('click',()=>playReel(v));
+  v.addEventListener('click',()=>{if(!v.paused)stopReel(v)});
+  v.addEventListener('ended',()=>stopReel(v));
 });
 
 // ============ questionnaire ============
