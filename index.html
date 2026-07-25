@@ -5,11 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Kadr — White-label video editing for marketing firms</title>
 <meta name="description" content="Kadr is the white-label edit desk behind mid-size marketing firms in the US and Europe. Short-form, ad cuts and podcast repurposing back in 48 hours, under your name." />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="preload" as="image" href="videos/poster-hook.jpg" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='24' fill='%230a0a0a'/><rect x='22' y='26' width='56' height='48' rx='10' fill='none' stroke='%23fffaf0' stroke-width='7'/><path d='M44 38L62 50L44 62Z' fill='%23ff4d8b'/></svg>" />
 <style>
+/* ============ self-hosted fonts (latin subset, variable) ============ */
+@font-face{font-family:'Gabarito';font-style:normal;font-weight:400 700;font-display:swap;src:url('fonts/gabarito-var.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 700;font-display:swap;src:url('fonts/inter-var.woff2') format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0300-0301,U+0303-0304,U+0308-0309,U+0323,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
 /* ============ Clay design system tokens (DESIGN-clay.md) ============ */
 :root{
   --primary:#0a0a0a; --primary-active:#1f1f1f;
@@ -233,7 +234,7 @@ footer{background:var(--surface-soft); margin-top:var(--section); padding:80px 0
     </div>
     <div class="hero-art r">
       <i class="clay clay-1"></i><i class="clay clay-2"></i><i class="clay clay-3"></i>
-      <video autoplay muted loop playsinline preload="metadata" src="videos/work-hook.mp4"></video>
+      <video autoplay muted loop playsinline preload="metadata" poster="videos/poster-hook.jpg" src="videos/hero-hook.mp4"></video>
     </div>
   </div>
 </header>
@@ -245,23 +246,23 @@ footer{background:var(--surface-soft); margin-top:var(--section); padding:80px 0
     <p class="lede r" style="margin-top:16px">Real deliverables from live retainers. Tap any clip for sound.</p>
     <div class="reel-grid">
       <div class="reel bg-pink r">
-        <video class="rv-9x16" muted loop playsinline preload="metadata" src="videos/work-hook.mp4"></video>
+        <video class="rv-9x16" muted loop playsinline preload="none" poster="videos/poster-hook.jpg" data-src="videos/work-hook.mp4"></video>
         <div><h3>Hook-first short</h3><p>Built around the first three seconds. Cut, captioned and graded for feed.</p></div>
       </div>
       <div class="reel bg-teal r">
-        <video class="rv-9x16" muted loop playsinline preload="metadata" src="videos/work-mukul-1.mp4"></video>
+        <video class="rv-9x16" muted loop playsinline preload="none" poster="videos/poster-mukul-1.jpg" data-src="videos/work-mukul-1.mp4"></video>
         <div><h3>Founder talking-head</h3><p>Weekly series — same look, same schedule, zero chasing.</p></div>
       </div>
       <div class="reel bg-lavender r">
-        <video class="rv-9x16" muted loop playsinline preload="metadata" src="videos/work-mukul-2.mp4"></video>
+        <video class="rv-9x16" muted loop playsinline preload="none" poster="videos/poster-mukul-2.jpg" data-src="videos/work-mukul-2.mp4"></video>
         <div><h3>Punch-cut promo</h3><p>Eleven seconds, one message, no wasted frames.</p></div>
       </div>
       <div class="reel bg-peach reel-wide r">
-        <video class="rv-16x9" muted loop playsinline preload="metadata" src="videos/work-sadha-1.mp4"></video>
+        <video class="rv-16x9" muted loop playsinline preload="none" poster="videos/poster-sadha-1.jpg" data-src="videos/work-sadha-1.mp4"></video>
         <div><h3>Long-form repurposed</h3><p>One sit-down recording, recut into a landscape edit and a stack of shorts.</p></div>
       </div>
       <div class="reel bg-ochre r">
-        <video class="rv-1x1" muted loop playsinline preload="metadata" src="videos/work-sadha-2.mp4"></video>
+        <video class="rv-1x1" muted loop playsinline preload="none" poster="videos/poster-sadha-2.jpg" data-src="videos/work-sadha-2.mp4"></video>
         <div><h3>Square social cut</h3><p>Framed for the formats your clients actually run.</p></div>
       </div>
     </div>
@@ -485,7 +486,7 @@ const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.tar
 document.querySelectorAll('.r').forEach(el=>io.observe(el));
 
 // reel videos: play on view, tap toggles sound
-const vio=new IntersectionObserver(es=>{es.forEach(e=>{const v=e.target; if(e.isIntersecting){v.play().catch(()=>{})}else{v.pause()}})},{threshold:.3});
+const vio=new IntersectionObserver(es=>{es.forEach(e=>{const v=e.target; if(e.isIntersecting){if(!v.src&&v.dataset.src){v.src=v.dataset.src}v.play().catch(()=>{})}else{v.pause()}})},{threshold:.3,rootMargin:'200px 0px'});
 document.querySelectorAll('.reel video').forEach(v=>{
   vio.observe(v);
   v.addEventListener('click',()=>{v.muted=!v.muted; if(v.muted===false)v.play().catch(()=>{})});
