@@ -181,6 +181,12 @@ header{padding:72px 0 var(--section); position:relative; overflow:hidden}
 .cta-band .clay-r{width:100px; height:100px; right:-24px; top:-30px; background:radial-gradient(circle at 32% 28%, #ff9d8f, var(--coral) 62%, #d0483a)}
 .cta-band p{margin:16px auto 0; max-width:46ch; color:var(--body)}
 .cta-band .btn{margin-top:28px}
+.mail-cta{position:relative; display:inline-block}
+.mail-menu{position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%); z-index:20; min-width:236px; background:var(--canvas); border:1px solid var(--hairline); border-radius:var(--r-md); padding:6px; box-shadow:0 18px 36px -18px rgba(10,10,10,.35); text-align:left}
+.mail-menu[hidden]{display:none}
+.mail-menu a{display:block; padding:10px 12px; border-radius:8px; font-size:14px; font-weight:500; text-decoration:none; color:var(--ink)}
+.mail-menu a:hover,.mail-menu a:focus-visible{background:var(--surface-card); outline:none}
+.mail-menu .m-sub{display:block; font-size:12px; font-weight:400; color:var(--muted); margin-top:2px}
 footer{background:var(--surface-soft); margin-top:var(--section); padding:80px 0 40px; color:var(--body); font-size:14px}
 .foot-grid{display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px}
 @media(max-width:760px){.foot-grid{grid-template-columns:1fr 1fr}}
@@ -449,7 +455,13 @@ footer{background:var(--surface-soft); margin-top:var(--section); padding:80px 0
       <i class="clay clay-l"></i><i class="clay clay-r"></i>
       <h2 class="d-md">Send one project. Judge the cut.</h2>
       <p>The pilot edit is free and yours to keep either way. If the work isn't better than what you're shipping today, that's the end of it.</p>
-      <a href="mailto:kadrcuts@gmail.com?subject=Pilot%20edit%20request&amp;body=Hi%20Kadr%2C%0D%0A%0D%0AI%27d%20like%20to%20claim%20the%20free%20pilot%20edit.%0D%0A%0D%0ABEFORE%20YOU%20SEND%3A%20attach%20your%20video%20file%20to%20this%20email.%20If%20it%27s%20too%20large%20to%20attach%2C%20paste%20a%20Google%20Drive%2C%20Dropbox%20or%20WeTransfer%20link%20on%20the%20line%20below.%0D%0A%0D%0AVideo%20link%20%28if%20not%20attached%29%3A%0D%0A%0D%0A%0D%0AFirm%20name%3A%0D%0AWhat%20the%20edit%20is%20for%3A%0D%0APreferred%20length%3A%0D%0ADeadline%3A%0D%0A%0D%0AThanks%2C%0D%0A" class="btn btn-primary">Email us your video</a>
+      <div class="mail-cta">
+        <a href="mailto:kadrcuts@gmail.com?subject=Pilot%20edit%20request&amp;body=Hi%20Kadr%2C%0D%0A%0D%0AI%27d%20like%20to%20claim%20the%20free%20pilot%20edit.%0D%0A%0D%0ABEFORE%20YOU%20SEND%3A%20attach%20your%20video%20file%20to%20this%20email.%20If%20it%27s%20too%20large%20to%20attach%2C%20paste%20a%20Google%20Drive%2C%20Dropbox%20or%20WeTransfer%20link%20on%20the%20line%20below.%0D%0A%0D%0AVideo%20link%20%28if%20not%20attached%29%3A%0D%0A%0D%0A%0D%0AFirm%20name%3A%0D%0AWhat%20the%20edit%20is%20for%3A%0D%0APreferred%20length%3A%0D%0ADeadline%3A%0D%0A%0D%0AThanks%2C%0D%0A" class="btn btn-primary" id="mailCta" aria-haspopup="menu" aria-expanded="false" aria-controls="mailMenu">Email us your video</a>
+        <div class="mail-menu" id="mailMenu" role="menu" hidden>
+          <a role="menuitem" href="#" data-mail="gmail">Gmail<span class="m-sub">Opens compose in a new tab</span></a>
+          <a role="menuitem" href="#" data-mail="default">My mail app<span class="m-sub">Outlook, Apple Mail, etc.</span></a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -484,6 +496,50 @@ footer{background:var(--surface-soft); margin-top:var(--section); padding:80px 0
   </div>
   <div class="foot-hills" aria-hidden="true"><i class="hill-2"></i><i class="hill-1"></i><i class="hill-3"></i></div>
 </footer>
+
+<script>
+/* Email CTA: let the visitor pick Gmail (web) or their default mail app. */
+(function(){
+  var cta = document.getElementById('mailCta');
+  var menu = document.getElementById('mailMenu');
+  if(!cta || !menu) return;
+
+  var mailto = cta.getAttribute('href');
+  var q = mailto.slice(mailto.indexOf('?') + 1);
+  var params = new URLSearchParams(q);
+  var to = mailto.slice('mailto:'.length, mailto.indexOf('?'));
+
+  var gmail = 'https://mail.google.com/mail/?view=cm&fs=1'
+    + '&to=' + encodeURIComponent(to)
+    + '&su=' + encodeURIComponent(params.get('subject') || '')
+    + '&body=' + encodeURIComponent(params.get('body') || '');
+
+  menu.querySelector('[data-mail="gmail"]').href = gmail;
+  menu.querySelector('[data-mail="gmail"]').target = '_blank';
+  menu.querySelector('[data-mail="gmail"]').rel = 'noopener';
+  menu.querySelector('[data-mail="default"]').href = mailto;
+
+  function open(state){
+    menu.hidden = !state;
+    cta.setAttribute('aria-expanded', state ? 'true' : 'false');
+  }
+
+  cta.addEventListener('click', function(e){
+    e.preventDefault();
+    open(menu.hidden);
+  });
+
+  menu.addEventListener('click', function(){ open(false); });
+
+  document.addEventListener('click', function(e){
+    if(!menu.hidden && !menu.contains(e.target) && e.target !== cta) open(false);
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && !menu.hidden){ open(false); cta.focus(); }
+  });
+})();
+</script>
 
 <script>
 // scroll reveal
