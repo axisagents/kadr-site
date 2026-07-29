@@ -73,12 +73,12 @@ header{padding:72px 0 var(--section); position:relative; overflow:hidden}
 .pill{background:var(--surface-card); color:var(--ink); font-size:13px; font-weight:500; border-radius:9999px; padding:6px 14px}
 
 /* hero artifact: clay scene + video */
-.hero-art{position:relative; background:var(--surface-soft); border-radius:var(--r-xl); padding:36px; display:flex; justify-content:center; overflow:hidden}
+.hero-art{position:relative; background:var(--surface-soft); border-radius:var(--r-xl); padding:14px; display:flex; justify-content:center; overflow:hidden}
 .hero-art .clay{position:absolute; border-radius:50%; }
 .clay-1{width:150px; height:150px; left:-40px; bottom:-40px; background:radial-gradient(circle at 32% 28%, #ffc9a4, var(--peach) 62%, #e08b5c)}
 .clay-2{width:90px; height:90px; right:-20px; top:36px; background:radial-gradient(circle at 32% 28%, #d2c4f5, var(--lavender) 62%, #8f7ad0)}
 .clay-3{width:56px; height:56px; left:24px; top:22px; background:radial-gradient(circle at 32% 28%, #ff87ae, var(--pink) 62%, #d63c74)}
-.hero-art video{width:min(360px,82%); aspect-ratio:1/1; object-fit:cover; border-radius:var(--r-lg); position:relative; z-index:1; box-shadow:0 24px 48px -24px rgba(10,10,10,.35)}
+.hero-art video{width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:var(--r-lg); position:relative; z-index:1; box-shadow:0 24px 48px -24px rgba(10,10,10,.35)}
 @media(max-width:900px){.hero-art{margin-top:8px}}
 
 /* ============ proof of work ============ */
@@ -182,7 +182,7 @@ header{padding:72px 0 var(--section); position:relative; overflow:hidden}
 .cta-band p{margin:16px auto 0; max-width:46ch; color:var(--body)}
 .cta-band .btn{margin-top:28px}
 .mail-cta{position:relative; display:inline-block}
-.mail-menu{position:absolute; top:calc(100% + 8px); left:50%; transform:translateX(-50%); z-index:20; min-width:236px; background:var(--canvas); border:1px solid var(--hairline); border-radius:var(--r-md); padding:6px; box-shadow:0 18px 36px -18px rgba(10,10,10,.35); text-align:left}
+.mail-menu{position:fixed; z-index:120; min-width:236px; background:var(--canvas); border:1px solid var(--hairline); border-radius:var(--r-md); padding:6px; box-shadow:0 18px 36px -18px rgba(10,10,10,.35); text-align:left}
 .mail-menu[hidden]{display:none}
 .mail-menu a{display:block; padding:10px 12px; border-radius:8px; font-size:14px; font-weight:500; text-decoration:none; color:var(--ink)}
 .mail-menu a:hover,.mail-menu a:focus-visible{background:var(--surface-card); outline:none}
@@ -519,10 +519,36 @@ footer{background:var(--surface-soft); margin-top:var(--section); padding:80px 0
   menu.querySelector('[data-mail="gmail"]').rel = 'noopener';
   menu.querySelector('[data-mail="default"]').href = mailto;
 
+  /* Move the menu to <body>: the CTA band clips overflow, and its reveal
+     animation transforms it, which would trap a position:fixed child. */
+  document.body.appendChild(menu);
+
+  function place(){
+    var b = cta.getBoundingClientRect();
+    var m = menu.getBoundingClientRect();
+    var gap = 8, edge = 12;
+
+    var left = b.left + b.width / 2 - m.width / 2;
+    left = Math.max(edge, Math.min(left, window.innerWidth - m.width - edge));
+
+    var top = b.bottom + gap;
+    if(top + m.height > window.innerHeight - edge){
+      var above = b.top - gap - m.height;
+      top = above >= edge ? above : Math.max(edge, window.innerHeight - m.height - edge);
+    }
+
+    menu.style.left = Math.round(left) + 'px';
+    menu.style.top = Math.round(top) + 'px';
+  }
+
   function open(state){
     menu.hidden = !state;
     cta.setAttribute('aria-expanded', state ? 'true' : 'false');
+    if(state) place();
   }
+
+  window.addEventListener('scroll', function(){ if(!menu.hidden) place(); }, {passive:true});
+  window.addEventListener('resize', function(){ if(!menu.hidden) place(); });
 
   cta.addEventListener('click', function(e){
     e.preventDefault();
